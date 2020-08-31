@@ -1,0 +1,38 @@
+# Introduction
+
+`SimpleCache` class provides simple cache features. It provides `read`, `write`, `fetch` methods.
+
+## Usage
+
+```
+SimpleCache.fetch(:key1) { 123 }
+SimpleCache.read(:key1) # => 123
+SimpleCache.write(:key1, 321)
+SimpleCache.read(:key1) # => 321
+SimpleCache.write(:key2, 321)
+```
+
+# Configuration
+
+```
+SimpleCache.config = { backend: SomeBackEndClass, expiration_time_millis: 123 }
+```
+
+# Backend
+
+Backend class should implement such methods:
+* `def []=(key, expiration_time_millis, value)`
+* `def [](key)`
+
+Optional method to implement is `def cleanup!`.
+
+# DRb
+
+Provided DRb server and client allow to run the Hash-like backend in a separate
+process and communicate with it from the client in another process. Thus Ruby
+hash-like in-memory storage can save data and serve as cache backend until its
+process is shut down.
+
+## Usage
+
+See `main.rb` file for example.
